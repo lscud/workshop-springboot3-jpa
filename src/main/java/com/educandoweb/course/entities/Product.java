@@ -1,5 +1,6 @@
 package com.educandoweb.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -26,6 +27,8 @@ public class Product implements Serializable {
     private Set<Category> categories = new HashSet<>(); //Não foi usado List e sim Set pois este grupo garante que não vou ter um produto com mais de uma ocorrencia da mesma Categoria. O mesmo Produto não pode ter a mesma categoria mais de uma vez.
     //instanciamos pois a minha coleção tem que começar vazia e nao nula.
 
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> items = new HashSet<>(); //> //Não vou admitir repetições do mesmo item
     public Product(){
 
     }
@@ -84,6 +87,14 @@ public class Product implements Serializable {
         return categories;
     }
 
+    @JsonIgnore
+    public Set<Order> getOrders(){
+        Set<Order> set = new HashSet<>();
+        for (OrderItem x : items){
+            set.add(x.getOrder());
+        }
+        return set;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
