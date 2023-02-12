@@ -21,7 +21,8 @@ public class Product implements Serializable {
     private String imgUrl;
 
     //Associações:
-    @Transient
+    @ManyToMany
+    @JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>(); //Não foi usado List e sim Set pois este grupo garante que não vou ter um produto com mais de uma ocorrencia da mesma Categoria. O mesmo Produto não pode ter a mesma categoria mais de uma vez.
     //instanciamos pois a minha coleção tem que começar vazia e nao nula.
 
